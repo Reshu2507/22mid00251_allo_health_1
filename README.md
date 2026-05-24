@@ -13,7 +13,7 @@ Welcome to the **Allo Health Real-time Inventory & Order Fulfillment Platform**.
 
 ---
 
-## 🛠️ Stack & Technologies
+## Stack & Technologies
 
 - **Framework**: Next.js 16 (App Router, TypeScript)
 - **Database Layer**: Prisma v7 ORM
@@ -33,9 +33,9 @@ Ensure you have **Node.js** (v18+) and **npm** installed on your system.
 ### 2. Environment Variables
 Create a `.env` file in the root directory:
 ```env
-DATABASE_URL="postgresql://mithrr@localhost:5432/allo_health"
+DATABASE_URL="postgresql://reshma@localhost:5432/allo_health"
 ```
-*(Replace `mithrr` with your local Postgres user or use your hosted Supabase/Neon connection string).*
+*(Replace `reshma` with your local Postgres user or use your hosted Supabase/Neon connection string).*
 
 ### 3. Setup Dependencies & Initialize
 Install all packages and sync the Prisma schema:
