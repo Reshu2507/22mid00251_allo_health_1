@@ -71,6 +71,8 @@ export default function ReservationPage({ params }: { params: Promise<{ id: stri
           if (data.status === 'PENDING') {
             setUiStatus('EXPIRED');
           }
+        } else {
+          setIsExpired(false);
         }
       } else {
         setErrorToast('Could not fetch reservation details.');
@@ -109,7 +111,11 @@ export default function ReservationPage({ params }: { params: Promise<{ id: stri
   }, [timeLeft, uiStatus]);
 
   const handleConfirm = async () => {
-    if (isExpired || uiStatus !== 'PENDING') return;
+    console.log("handleConfirm triggered! isExpired:", isExpired, "uiStatus:", uiStatus);
+    if (isExpired || uiStatus !== 'PENDING') {
+      console.log("Early return! isExpired is true or uiStatus is not PENDING");
+      return;
+    }
 
     setConfirming(true);
     setErrorToast(null);
