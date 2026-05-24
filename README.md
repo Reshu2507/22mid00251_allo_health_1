@@ -2,7 +2,7 @@
 
 Welcome to the **Allo Health Real-time Inventory & Order Fulfillment Platform**. This system is built to prevent checkout race conditions by securing temporary 10-minute reservation holds on units. It features direct PostgreSQL-level pessimistic locking to provide a 100% guarantee of data correctness under high concurrency.
 
-## 🚀 Key Features
+##  Key Features
 
 - **Pessimistic Concurrency Protection**: High-precision race-condition prevention using atomic `SELECT ... FOR UPDATE` row-level locks in PostgreSQL.
 - **Vibrant Dark/Glassmorphic UI**: High-fidelity dashboard displaying live product stocks per warehouse and responsive warehouse source selections.
@@ -25,7 +25,7 @@ Welcome to the **Allo Health Real-time Inventory & Order Fulfillment Platform**.
 
 ---
 
-## 📦 Getting Started & Running Locally
+##  Getting Started & Running Locally
 
 ### 1. Prerequisites
 Ensure you have **Node.js** (v18+) and **npm** installed on your system.
@@ -59,7 +59,7 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser to view 
 
 ---
 
-## ⚡ Concurrency & Lock Strategy
+##  Concurrency & Lock Strategy
 
 ### How Concurrency is Guaranteed Correct
 When a reservation request (`POST /api/reservations`) is made, the application opens a database transaction and executes a pessimistic row lock query:
@@ -74,7 +74,7 @@ This prevents the standard double-booking race condition without the overhead of
 
 ---
 
-## ⏲️ Expiry Mechanism in Production
+## Expiry Mechanism in Production
 
 To guarantee expired holds are returned to available stock immediately without leakages, we employ a hybrid cleanup approach:
 1. **Lazy Cleanup (On Read)**: Any call to `GET /api/products` or `POST /api/reservations` runs `releaseExpiredReservations()` first. It finds and releases all expired holds on-the-fly, ensuring that stock displays and calculations are always 100% accurate at the moment of inspection.
@@ -82,7 +82,7 @@ To guarantee expired holds are returned to available stock immediately without l
 
 ---
 
-## 🔒 Idempotency Design (Bonus)
+##  Idempotency Design (Bonus)
 
 We support the client-side `Idempotency-Key` header:
 - **POST `/api/reservations`**: Before running the transaction, the server queries the database for an existing reservation with the supplied key. If found, it returns the existing reservation details instantly. If not, it creates a new one and stores the key.
@@ -90,7 +90,7 @@ We support the client-side `Idempotency-Key` header:
 
 ---
 
-## 🧪 Running Concurrency Verification
+##  Running Concurrency Verification
 
 To prove that our locking strategy successfully blocks race conditions, run the integrated concurrency simulation script:
 ```bash
@@ -107,7 +107,7 @@ npx tsx src/scripts/test-concurrency.ts
 
 ---
 
-## 🤝 Architectural Trade-offs & Future Extensions
+##  Architectural Trade-offs & Future Extensions
 
 1. **Database Locking vs. Redis Locking**: Pessimistic row locking in PostgreSQL is highly robust and avoids running separate Redis instances. However, for massive global scales (millions of requests/sec), locking database rows can increase transaction times. In a future production system, a distributed caching layer (like **Upstash Redis** or **Redlock**) would absorb lock queries before they hit the relational DB.
 2. **Cron Frequency**: In high-traffic scenarios, active cron cleanup intervals should be set to 1 minute to release carts rapidly. We mitigated slower crons by adding lazy cleanups, which guarantees correctness on user interaction regardless of cron delays.
